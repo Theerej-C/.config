@@ -3,3 +3,4 @@
     - vim plug
     - node
     - clangd (or whatever language server you want).
+    - vim-gtk3
