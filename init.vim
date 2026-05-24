@@ -43,6 +43,8 @@ let NERDTreeShowHidden=1
 " =========================
 nnoremap <leader>f :Files<CR>
 nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>n :bnext<CR>
+nnoremap <leader>p :bprevious<CR>
 
 " =========================
 " CoC (LSP + completion)
