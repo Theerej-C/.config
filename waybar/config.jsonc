@@ -1,0 +1,109 @@
+
+{
+  "layer": "top",
+  "position": "top",
+  "height": 25,
+  "spacing": 8,
+  "exclusive": true,
+
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "cpu",
+    "memory",
+    "disk#root",
+    "disk#home",
+    "temperature",
+    "network",
+    "pulseaudio",
+    "battery"
+  ],
+
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "disable-scroll": true,
+    "active-only": false,
+    "all-outputs": true
+  },
+
+  "clock": {
+    "format": "{:%a, %d %b  %H:%M:%S}",
+    "interval": 1,
+    "tooltip": true,
+    "tooltip-format": "{:%A, %d %B %Y}"
+  },
+
+  "cpu": {
+    "interval": 2,
+    "format": "CPU {usage}%",
+    "tooltip": true
+  },
+
+  "memory": {
+    "interval": 5,
+    "format": "RAM {percentage}%",
+    "tooltip": true,
+    "tooltip-format": "Used: {used:0.1f}G / Total: {total:0.1f}G"
+  },
+"disk#root": {
+    "path": "/",
+    "interval": 30,
+    "format": "ROOT {free} FREE",
+    "tooltip": true,
+    "tooltip-format": "Root: {free} free / {total} total ({percentage_used}% used)"
+},
+
+"disk#home": {
+    "path": "/home",
+    "interval": 30,
+    "format": "HOME {free} FREE",
+    "tooltip": true,
+    "tooltip-format": "Home: {free} free / {total} total ({percentage_used}% used)"
+}
+,
+  "temperature": {
+    "thermal-zone": 0,
+    "interval": 5,
+    "format": "TEMP {temperatureC}°C",
+    "critical-threshold": 85,
+    "tooltip": true
+  },
+
+  "network": {
+    "interval": 2,
+    "format-wifi": "WIFI {signalStrength}% ↓{bandwidthDownBytesCompact} ↑{bandwidthUpBytesCompact}",
+    "format-ethernet": "ETH ↓{bandwidthDownBytesCompact} ↑{bandwidthUpBytesCompact}",
+    "format-disconnected": "OFFLINE",
+    "tooltip": true,
+    "tooltip-format-wifi": "{essid} | Signal: {signalStrength}% | Interface: {ifname}",
+    "tooltip-format-ethernet": "{ifname} | {ipaddr}"
+  },
+
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "VOL MUTED",
+    "scroll-step": 5,
+    "tooltip": true,
+    "on-click": "pavucontrol"
+  },
+
+  "battery": {
+    "interval": 30,
+    "states": {
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "BAT {capacity}%",
+    "format-charging": "BAT CHG {capacity}%",
+    "format-full": "BAT FULL",
+    "tooltip": true,
+    "tooltip-format": "{capacity}% | {time}"
+  }
+}

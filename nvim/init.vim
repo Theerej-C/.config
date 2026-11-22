@@ -1,72 +1,91 @@
-""" Options
-
-set nocompatible            " disable compatibility to old-time vi
-set showmatch               " show matching 
-set ignorecase              " case insensitive 
-set mouse=v                 " middle-click paste with 
-set hlsearch                " highlight search 
-set incsearch               " incremental search
-set tabstop=4               " number of columns occupied by a tab 
-set softtabstop=4           " see multiple spaces as tabstops so <BS> does the right thing
-set expandtab               " converts tabs to white space
-set shiftwidth=4            " width for autoindents
-set autoindent              " indent a new line the same amount as the line just typed
-set number                  " add line numbers
-set wildmode=longest,list   " get bash-like tab completions
-set cc=80                  " set an 80 column border for good coding style
-filetype plugin indent on   "allow auto-indenting depending on file type
-syntax on                   " syntax highlighting
-set mouse=a                 " enable mouse click
-set clipboard=unnamedplus   " using system clipboard
-filetype plugin on
-set cursorline              " highlight current cursorline
-set ttyfast                 " Speed up scrolling in Vim
-
-
-" Plugins
-call plug#begin()
-    Plug 'voldikss/vim-floaterm'
-    Plug 'ryanoasis/vim-devicons'
-    Plug 'honza/vim-snippets'
-    Plug 'scrooloose/nerdtree'
-    Plug 'preservim/nerdcommenter'
-    Plug 'mhinz/vim-startify'
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.8' }
-    Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
-    Plug 'nvim-treesitter/playground'
-    Plug 'nvim-lualine/lualine.nvim'
-    Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'cdelledonne/vim-cmake'
-    Plug 'yaegassy/coc-pylsp', {'do': 'yarn install --frozen-lockfile'}
-call plug#end()
-let g:cmake_link_compile_commands = 1
-
-colorscheme catppuccin " catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
-
-
-""" require docs
-lua <<EOF
-require('treesitter')
-require('coc')
-EOF
-
-
-" Key bindings:
-nnoremap <SPACE> <Nop>
+" =========================
+" Basic Neovim Settings
+" =========================
+set number
+set relativenumber
+set tabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
+set nowrap
+set cursorline
+set termguicolors
+set hidden
+set mouse=a
+set clipboard=unnamedplus 
 let mapleader=" "
 
-nmap <leader>e :NERDTreeToggle<CR>
+" =========================
+" Plugin Manager
+" =========================
+call plug#begin('~/.local/share/nvim/plugged')
+
+" File tree
+Plug 'preservim/nerdtree'
+
+" File finder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" Language Server / Completion
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'Raimondi/delimitMate'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+call plug#end()
+
+" =========================
+" NERDTree
+" =========================
+nnoremap <leader>e :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
+
+" =========================
+" FZF
+" =========================
+nnoremap <leader>f :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>n :bnext<CR>
+nnoremap <leader>p :bprevious<CR>
+
+" Telescope
+
+" Find files using Telescope
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
+" Search for text across your project (Requires ripgrep installed on your system)
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+" List open buffers
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
+" Search Vim help tags
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-tnoremap <Esc> <C-\><C-n>
-nnoremap <leader>tt <cmd>FloatermToggle<cr>
-nnoremap <leader>tn <cmd>FloatermNew<cr>
-nnoremap <leader>tp <cmd>FloatermPrev<cr>
-nnoremap <leader>t[ <cmd>FloatermNext<cr>
-nnoremap <leader>cg <cmd>CMakeGenerate<cr>
-nnoremap <leader>cb <cmd>CMakeBuild<cr>
+" =========================
+" CoC (LSP + completion)
+" =========================
+set updatetime=300
+set shortmess+=c
+
+" TAB: next completion item
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Shift-TAB: previous completion item
+inoremap <silent><expr> <S-TAB>
+      \ pumvisible() ? "\<C-p>" : "\<S-TAB>"
+
+" Enter: confirm completion
+inoremap <silent><expr> <CR>
+      \ pumvisible() ? coc#_select_confirm() : "\<CR>"
+inoremap jj <esc> 
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gr <Plug>(coc-references)
+nnoremap <silent> K :call CocActionAsync('doHover')<CR>
+
+" Auto-format on save (C++)
+autocmd BufWritePre *.cpp,*.h :silent! call CocAction('format')
+
+" =========================
+" C++ specific
+" =========================
+autocmd FileType cpp setlocal tabstop=4 shiftwidth=4
+
+
